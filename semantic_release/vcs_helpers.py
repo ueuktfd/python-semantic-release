@@ -28,12 +28,22 @@ def get_commit_log(from_rev=None):
     """
     Yields all commit messages from last to first.
     """
+    debug(f"get_commit_log(from_rev={from_rev})")
 
     check_repo()
     rev = None
     if from_rev:
         rev = '...{from_rev}'.format(from_rev=from_rev)
-    for commit in repo.iter_commits(rev):
+    try:
+        commits = list(repo.iter_commits(rev))
+    except GitCommandError as error:
+        if 'fatal: bad revision' in error.stderr:
+            debug('Failed at finding tag, uses the whole log.')
+            commits = repo.iter_commits()
+        else:
+            raise error
+
+    for commit in commits:
         yield (commit.hexsha, commit.message)
 
 
@@ -44,7 +54,7 @@ def get_last_version(skip_tags=None) -> Optional[str]:
     :return: A string contains version number.
     """
 
-    debug('get_last_version skip_tags=', skip_tags)
+    debug(f'get_last_version(skip_tags={skip_tags})')
     check_repo()
     skip_tags = skip_tags or []
 

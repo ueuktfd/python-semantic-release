@@ -38,7 +38,8 @@ class Base(object):
 class Github(Base):
     """Github helper class
     """
-    API_URL = 'https://api.github.com'
+    # API_URL = 'https://api.github.com'
+    API_URL = os.environ.get('GITHUB_API', 'https://api.github.com')
 
     @staticmethod
     def domain() -> str:

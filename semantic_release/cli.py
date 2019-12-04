@@ -181,6 +181,7 @@ def publish(**kwargs):
             upload_to_pypi(
                 username=os.environ.get('PYPI_USERNAME'),
                 password=os.environ.get('PYPI_PASSWORD'),
+                pipy_config=os.environ.get('PYPI_CONFIG'),
                 # We are retrying, so we don't want errors for files that are already on PyPI.
                 skip_existing=retry,
                 remove_dist=config.getboolean('semantic_release', 'remove_dist'),

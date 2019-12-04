@@ -4,7 +4,7 @@ from unittest import TestCase
 import toml
 
 from semantic_release.errors import ImproperConfigurationError
-from semantic_release.history import parser_angular
+from semantic_release.history import parser_hc
 from semantic_release.settings import _config, current_commit_parser
 
 from . import mock, reset_config
@@ -87,4 +87,4 @@ class ConfigTests(TestCase):
         self.assertRaises(ImproperConfigurationError, current_commit_parser)
 
     def test_current_commit_parser_should_return_correct_parser(self):
-        self.assertEqual(current_commit_parser(), parser_angular.parse_commit_message)
+        self.assertEqual(current_commit_parser(), parser_hc.parse_commit_message)

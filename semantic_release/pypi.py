@@ -10,6 +10,7 @@ def upload_to_pypi(
         path: str = 'dist',
         username: str = None,
         password: str = None,
+        pipy_config: str = None,
         skip_existing: bool = False,
         remove_dist: bool = True
 ):
@@ -21,18 +22,29 @@ def upload_to_pypi(
     :param skip_existing: Continue uploading files if one already exists. (Only valid when
          uploading to PyPI. Other implementations may not support this.)
     """
-    if username is None or password is None or username == "" or password == "":
+    if (username is None or password is None or username == "" or password == "") \
+            and (pipy_config is None or pipy_config == ""):
         raise ImproperConfigurationError('Missing credentials for uploading')
     if remove_dist:
         run(f'rm -rf {path}')
     run('python setup.py {}'.format(dists))
-    run(
-        'twine upload -u {} -p {} {} {}/*'.format(
-            username,
-            password,
-            '--skip-existing' if skip_existing else '',
-            path
+    if pipy_config != "" and pipy_config is not None:
+        run(
+            'twine upload  --config-file {} {} {}/*'.format(
+                pipy_config,
+                '--skip-existing' if skip_existing else '',
+                path
+            )
         )
-    )
+    else:
+        run(
+            'twine upload -u {} -p {} {} {}/*'.format(
+                username,
+                password,
+                '--skip-existing' if skip_existing else '',
+                path
+            )
+        )
+
     if remove_dist:
         run(f'rm -rf {path}')

@@ -38,7 +38,7 @@ class Base(object):
 class Github(Base):
     """Github helper class
     """
-    API_URL = 'https://' + os.environ.get('GITHUB_HOST', 'api.github.com')
+    API_URL = 'https://github.hc.ag/api/v3'
 
     @staticmethod
     def domain() -> str:
@@ -46,7 +46,7 @@ class Github(Base):
 
         :return: The Github domain
         """
-        return os.environ.get('GITHUB_HOST', 'github.com')
+        return os.environ.get('GITHUB_HOST', 'github.hc.ag')
 
     @staticmethod
     def token() -> Optional[str]:
@@ -87,6 +87,12 @@ class Github(Base):
         :return: The status of the request
         """
         url = '{domain}/repos/{owner}/{repo}/releases?access_token={token}'
+        debug_gh(url.format(
+            domain=Github.API_URL,
+            owner=owner,
+            repo=repo,
+            token=Github.token()
+        ))
         tag = 'v{0}'.format(version)
         debug_gh('listing releases')
         response = requests.post(

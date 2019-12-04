@@ -23,6 +23,9 @@ CHANGELOG_SECTIONS = [
     'breaking',
     'documentation',
     'performance',
+    'major',
+    'minor',
+    'patch',
 ]
 
 re_breaking = re.compile('BREAKING CHANGE: (.*)')
@@ -85,6 +88,9 @@ def generate_changelog(from_version: str, to_version: str = None) -> dict:
         'refactor': [],
         'breaking': [],
         'performance': [],
+        'major': [],
+        'minor': [],
+        'patch': [],
     }
 
     found_the_release = to_version is None
@@ -143,11 +149,16 @@ def markdown_changelog(version: str, changelog: dict, header: bool = False) -> s
         output += '## v{0}\n'.format(version)
 
     for section in CHANGELOG_SECTIONS:
+        debug('markdown_changelog() section={}'.format(section))
         if not changelog[section]:
             continue
 
         output += '\n### {0}\n'.format(section.capitalize())
+
         for item in changelog[section]:
+            debug('markdown_changelog() section={}, item={}'.format(section, item))
             output += '* {0} ({1})\n'.format(item[1], item[0])
+
+        debug('markdown_changelog() output={}'.format(output))
 
     return output

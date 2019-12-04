@@ -38,8 +38,7 @@ class Base(object):
 class Github(Base):
     """Github helper class
     """
-    # API_URL = 'https://api.github.com'
-    API_URL = os.environ.get('GITHUB_API', 'https://api.github.com')
+    API_URL = 'https://' + os.environ.get('GITHUB_HOST', 'api.github.com')
 
     @staticmethod
     def domain() -> str:
@@ -47,7 +46,7 @@ class Github(Base):
 
         :return: The Github domain
         """
-        return 'github.com'
+        return os.environ.get('GITHUB_HOST', 'github.com')
 
     @staticmethod
     def token() -> Optional[str]:

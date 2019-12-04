@@ -29,9 +29,9 @@ except ImportError:
     pass
 
 setup(
-    name='python-semantic-release',
+    name='hc-python-semantic-release',
     version=version,
-    url='http://github.com/relekang/python-semantic-release',
+    url='http://github.com/ueuktfd/python-semantic-release',
     author='Rolf Erik Lekang',
     author_email='me@rolflekang.com',
     description='Automatic semantic versioning for python projects',
